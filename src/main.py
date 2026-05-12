@@ -10,9 +10,9 @@ from feeder import log_feeding, read_last_feeding_date, next_feeding_date, days_
 
 if __name__ == "__main__":
     # Example usage: log a feeding event with today's date
-    log_feeding(date.today())
+    #log_feeding(date.today())
     #did it work? print something to confirm
-    print("Feeding event logged for today's date.")
+    #print("Feeding event logged for today's date.")
 
 # call read_last_feeding_date to see if it returns the correct date
 
@@ -42,11 +42,12 @@ if __name__ == "__main__":
         print(f"Urgency score: {urgency_score:.2f}")
 
     # add warning message if the score is above 1.0
+    # warning messages here until i make display functions in the future. for now, just print them out.
     if urgency_score >= 1.4:
-        print(f"Urgent Warning: Meeko is very hungry! Days since last feeding: {days_since}.")
+        print(f"Urgent Warning: Meeko is very hungry! Days since last feeding: {days_since}")
 
     elif urgency_score >= 1.2:
-        print(f"Warning: Meeko is hungry! Days since last feeding: {days_since}.")
+        print(f"Warning: Meeko is hungry! Days since last feeding: {days_since}")
 
 else:
     print("No feeding data found. Cannot calculate urgency score.")
