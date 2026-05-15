@@ -107,6 +107,31 @@ def calculate_urgency_score(days_since_last_feeding, days_between_feedings=5):
     return urgency_score
     
 
+def get_status_updates():
+    """
+    returns a string with the current status - days since last fed, and days until next feed. 
+    for now this will be triggered by the main.py script, but eventually i want to have this be triggered by a button press 
+    on the physical device.  
+    """
+    last_feeding = read_last_feeding_date()
+    if not last_feeding:
+        return "No feeding data found."
+
+    days_since = days_since_feeding(last_feeding)
+    next_feeding = next_feeding_date(last_feeding)
+    days_until_next = (next_feeding - date.today()).days
+    
+
+    if days_until_next == 0:
+        status = "Time to feed the beast!"
+    elif days_until_next > 0:
+        status = f"Last fed: {days_since} days ago. {days_until_next} days until next feeding."
+    else:
+        days_overdue = abs(days_until_next)
+        status = f"Overdue by {days_overdue} days!"
+    return status
+
+
 
 
 
