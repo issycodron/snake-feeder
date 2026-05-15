@@ -48,9 +48,9 @@ snake-feeder/
 
 ## Getting Started
 
-### Prerequisites
-- Python 3.12+
-- Git
+%### Prerequisites
+%- Python 3.12+
+%- Git
 
 ### Installation
 
