@@ -5,7 +5,7 @@ Script that runs the functions in feeder.py
 # Import necessary modules
 from datetime import date
 from feeder import log_feeding, read_last_feeding_date, next_feeding_date, days_since_feeding, calculate_urgency_score, get_status_updates
-from display import display_status, display_urgency
+from display import display_status, display_urgency, prompt_feeding_log
 
 # run feeder.py here. initial testing
 
@@ -17,6 +17,14 @@ if __name__ == "__main__":
         days_since = days_since_feeding(last_feeding)
         urgency_score = calculate_urgency_score(days_since)
         display_urgency(urgency_score, days_since)
+        fed = prompt_feeding_log()
+        if fed:
+            log_feeding(date.today())
+            print("Feeding event logged successfully.")
+        status = get_status_updates()
+        display_status(status)
+        
+
     else:
         print("No feeding data found.")
 

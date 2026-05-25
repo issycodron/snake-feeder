@@ -42,3 +42,17 @@ def display_urgency(urgency_score, days_since):
 
 
 
+def prompt_feeding_log():
+    """
+    This function will prompt the user to log a feeding event.
+    For now, this will ask for user input in the console,
+    but eventually it will be triggered by a button on the physical device.
+    Have it so if the user clicks no, it shows the current status
+    """
+    response = input("Did you feed Meeko? (y/n): ")
+    if response.lower() == "y":
+        print("Feeding event logged.")
+        return True
+    else:
+        print("Logging skipped. Displaying current status.")
+        return False
