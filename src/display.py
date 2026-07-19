@@ -3,7 +3,13 @@ display.py is responsible for displaying the status of Meeko's feeding schedule.
 This includes a trigger feature to show days since/days until next feeding, 
 and an urgency score that can be used to control the LED display on the physical device.
 '''
+from gpiozero import RGBLED
+from gpiozero.pins.lgpio import LGPIOFactory
+from gpiozero import Device
 
+Device.pin_factory = LGPIOFactory()
+
+led = RGBLED(red=17, green=27, blue=22, active_high=False)
 
 def display_status(status):
     """
@@ -26,18 +32,24 @@ def display_urgency(urgency_score, days_since):
     """
     print(f"Urgency Score: {urgency_score}")
     if urgency_score >= 1.4:
+        led.color = (1, 0, 0)
         print("LED Color: Flashing colours (Very Urgent)")
         print(f"Urgent Warning: Meeko is very hungry! Days since last feeding: {days_since}")
     elif urgency_score >= 1.2:
+        led.color = (1, 0, 0)
         print("LED Color: Flashing red (Urgent)")
         print(f"Warning: Meeko is hungry! Days since last feeding: {days_since}")
     elif urgency_score >= 1.0:
+        led.color = (1, 0, 0)
         print("LED Color: Red (Feed the beast!)")
     elif urgency_score >= 0.8:
+        led.color = (1, 0.4, 0)
         print("LED Color: Orange (Get Ready)")
     elif urgency_score >= 0.6:
+        led.color = (1, 1, 0)
         print("LED Color: Yellow (Has he pooped?)")
     else:
+        led.color = (0, 1, 0)
         print("LED Color: Green (Not Urgent)")
 
 
