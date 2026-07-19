@@ -6,12 +6,21 @@ and an urgency score that can be used to control the LED display on the physical
 from gpiozero import RGBLED, Button
 from gpiozero.pins.lgpio import LGPIOFactory
 from gpiozero import Device
+import board
+import busio
+import adafruit_ssd1306
+from PIL import Image, ImageDraw, ImageFont
+
+
 
 Device.pin_factory = LGPIOFactory()
 
 led = RGBLED(red=17, green=27, blue=22, active_high=False)
 
 button = Button(4)
+
+i2c = busio.I2C(board.SCL, board.SDA)
+oled = adafruit_ssd1306.SSD1306_I2C(128, 64, i2c)
 
 def display_status(status):
     """
@@ -24,6 +33,22 @@ def display_status(status):
     print("="*40)
     print(status)
     print("="*40)
+
+    oled.fill(0)
+    oled.show()
+
+    image = Image.new("1", (128, 64))
+    draw = ImageDraw.Draw(image)
+    draw.text((0,0), "Meeko's Feeds", fill=255)
+
+    # split status
+    lines = status.split(". ")
+    draw.text((0,20), lines[0], fill=255)
+    if len(lines) > 1:
+        draw.text((0, 30), lines[1], fill=255)
+    
+    oled.image(image)
+    oled.show()
 
 
 def display_urgency(urgency_score, days_since):
