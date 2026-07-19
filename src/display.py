@@ -3,13 +3,15 @@ display.py is responsible for displaying the status of Meeko's feeding schedule.
 This includes a trigger feature to show days since/days until next feeding, 
 and an urgency score that can be used to control the LED display on the physical device.
 '''
-from gpiozero import RGBLED
+from gpiozero import RGBLED, Button
 from gpiozero.pins.lgpio import LGPIOFactory
 from gpiozero import Device
 
 Device.pin_factory = LGPIOFactory()
 
 led = RGBLED(red=17, green=27, blue=22, active_high=False)
+
+button = Button(4)
 
 def display_status(status):
     """
@@ -56,15 +58,14 @@ def display_urgency(urgency_score, days_since):
 
 def prompt_feeding_log():
     """
-    This function will prompt the user to log a feeding event.
-    For now, this will ask for user input in the console,
-    but eventually it will be triggered by a button on the physical device.
-    Have it so if the user clicks no, it shows the current status
+    Prompts the user to log a feeding by pressing the physical button.
+    Times out after 10 seconds if no press detected.
     """
-    response = input("Did you feed Meeko? (y/n): ")
-    if response.lower() == "y":
-        print("Feeding event logged.")
+    print("Press the button to log a feed, or wait to skip...")
+    button.wait_for_press(timeout=10)
+    if button.is_pressed:
+        print("Feeding logged.")
         return True
     else:
-        print("Logging skipped. Displaying current status.")
+        print("Logging skipped.")
         return False
